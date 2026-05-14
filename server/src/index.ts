@@ -10,32 +10,37 @@ import fs from "fs";
 dotenv.config();
 
 const app = express();
+
+app.use(cors());
+app.use(express.json());
+app.use(CookieParser());
+
 const distPath = path.resolve(__dirname, "../../dist");
 const indexPath = path.join(distPath, "index.html");
 
-console.log("Current Directory (__dirname):", __dirname);
-console.log("Looking for static files in:", distPath);
-console.log("Does dist folder exist?", fs.existsSync(distPath));
-console.log("Does index.html exist?", fs.existsSync(indexPath));
+// Debug Logs
+console.log("Static files path:", distPath);
 
 app.use(express.static(distPath));
-app.use(cors());
-app.use(CookieParser());
-app.use(express.json());
 
-// API Routes
 app.use("/api/profile", profileRouter);
 app.use("/api/plan", planRouter);
 
-app.get(/.*/, (req, res) => {
+app.all(/.*/, (req, res) => {
+  if (req.method !== "GET") {
+    console.log(`Missing ${req.method} route for: ${req.url}`);
+    return res
+      .status(404)
+      .json({ error: `Route ${req.url} not found on this server.` });
+  }
+
   if (fs.existsSync(indexPath)) {
     res.sendFile(indexPath);
   } else {
-    res.status(404).send("Frontend build not found. Check Docker paths.");
+    res.status(404).send("Frontend build not found.");
   }
 });
 
-// PORT and HOST
 const PORT: number = parseInt(process.env.PORT || "3001", 10);
 const HOST = "0.0.0.0";
 

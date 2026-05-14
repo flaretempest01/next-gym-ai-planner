@@ -1,6 +1,8 @@
 # --- Stage 1: Build Frontend ---
 FROM node:20-alpine AS frontend-builder
 WORKDIR /app
+ARG VITE_NEON_AUTH_URL
+ENV VITE_NEON_AUTH_URL=$VITE_NEON_AUTH_URL
 COPY package*.json ./
 RUN npm install
 COPY . .
