@@ -23,6 +23,7 @@ app.get("*", (req, res) => {
   res.sendFile(path.join(distPath, "index.html"));
 });
 
+// PORT and HOST
 const PORT: number = parseInt(process.env.PORT || "3001", 10);
 const HOST = "0.0.0.0";
 
