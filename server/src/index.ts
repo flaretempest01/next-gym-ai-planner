@@ -19,7 +19,7 @@ app.use(express.json());
 app.use("/api/profile", profileRouter);
 app.use("/api/plan", planRouter);
 
-app.get("*", (req, res) => {
+app.get("/*", (req, res) => {
   res.sendFile(path.join(distPath, "index.html"));
 });
 
