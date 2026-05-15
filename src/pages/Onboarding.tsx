@@ -195,9 +195,16 @@ export default function Onboarding() {
                   className="bg-white/5 border-white/10 focus:border-green-500 min-h-37.5 text-lg p-6 rounded-3xl"
                 />
                 <Button
-                  onClick={() => handleFinish()}
+                  onPointerDown={() => {
+                    alert("Touch detected! Starting AI logic...");
+                    handleFinish();
+                  }}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    handleFinish();
+                  }}
                   disabled={isSubmitting}
-                  className="w-full h-16 text-xl rounded-3xl bg-green-500 hover:bg-green-600 group"
+                  className="z-9999 w-full h-16 text-xl rounded-3xl bg-green-500 hover:bg-green-600 group"
                 >
                   {isSubmitting
                     ? "Initiating AI Protocol..."
