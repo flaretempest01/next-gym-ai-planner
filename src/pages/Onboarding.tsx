@@ -107,9 +107,14 @@ export default function Onboarding() {
     }
   };
 
-  const handleFinish = async (e: React.SubmitEvent) => {
-    e.preventDefault();
+  const handleFinish = async (e?: React.SyntheticEvent) => {
+    // Prevent default behavior safely
+    if (e && typeof e.preventDefault === "function") {
+      e.preventDefault();
+    }
+
     setIsSubmitting(true);
+
     try {
       const profile: Omit<UserProfile, "userId" | "updatedAt"> = {
         goal: answers.goal,
@@ -121,10 +126,14 @@ export default function Onboarding() {
         preferredSplit: answers.preferredSplit,
       };
 
+      console.log("Saving profile...");
       await saveProfile(profile);
+
+      console.log("Generating plan...");
       await generatePlan();
+
       navigate("/profile");
-    } catch (err) {
+    } catch (err: any) {
       console.error("Onboarding failed", err);
     } finally {
       setIsSubmitting(false);
@@ -186,7 +195,7 @@ export default function Onboarding() {
                   className="bg-white/5 border-white/10 focus:border-green-500 min-h-37.5 text-lg p-6 rounded-3xl"
                 />
                 <Button
-                  onClick={handleFinish}
+                  onClick={() => handleFinish()}
                   disabled={isSubmitting}
                   className="w-full h-16 text-xl rounded-3xl bg-green-500 hover:bg-green-600 group"
                 >
