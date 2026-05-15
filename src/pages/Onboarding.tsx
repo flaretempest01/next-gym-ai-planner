@@ -108,7 +108,6 @@ export default function Onboarding() {
   };
 
   const handleFinish = async (e?: React.SyntheticEvent) => {
-    // Prevent default behavior safely
     if (e && typeof e.preventDefault === "function") {
       e.preventDefault();
     }
@@ -116,8 +115,6 @@ export default function Onboarding() {
     setIsSubmitting(true);
 
     try {
-      alert("Checkpoint 1: Starting SaveProfile");
-
       const profile: Omit<UserProfile, "userId" | "updatedAt"> = {
         goal: answers.goal,
         experience: answers.experience,
@@ -129,15 +126,11 @@ export default function Onboarding() {
       };
 
       await saveProfile(profile);
-      alert("Checkpoint 2: Profile Saved Successfully");
 
-      alert("Checkpoint 3: Starting AI Generation (This may take 30s)");
       await generatePlan();
 
-      alert("Checkpoint 4: Plan Generated! Navigating...");
       navigate("/profile");
     } catch (err: any) {
-      alert("CRASH ERROR: " + err.message);
       console.error("Onboarding failed", err);
     } finally {
       setIsSubmitting(false);
