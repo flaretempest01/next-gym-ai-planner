@@ -116,6 +116,8 @@ export default function Onboarding() {
     setIsSubmitting(true);
 
     try {
+      alert("Checkpoint 1: Starting SaveProfile");
+
       const profile: Omit<UserProfile, "userId" | "updatedAt"> = {
         goal: answers.goal,
         experience: answers.experience,
@@ -126,14 +128,16 @@ export default function Onboarding() {
         preferredSplit: answers.preferredSplit,
       };
 
-      console.log("Saving profile...");
       await saveProfile(profile);
+      alert("Checkpoint 2: Profile Saved Successfully");
 
-      console.log("Generating plan...");
+      alert("Checkpoint 3: Starting AI Generation (This may take 30s)");
       await generatePlan();
 
+      alert("Checkpoint 4: Plan Generated! Navigating...");
       navigate("/profile");
     } catch (err: any) {
+      alert("CRASH ERROR: " + err.message);
       console.error("Onboarding failed", err);
     } finally {
       setIsSubmitting(false);
