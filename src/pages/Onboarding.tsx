@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useState } from "react";
+import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
@@ -107,7 +107,8 @@ export default function Onboarding() {
     }
   };
 
-  const handleFinish = async () => {
+  const handleFinish = async (e: React.SubmitEvent) => {
+    e.preventDefault();
     setIsSubmitting(true);
     try {
       const profile: Omit<UserProfile, "userId" | "updatedAt"> = {
